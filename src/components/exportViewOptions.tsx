@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 
-export default function ExportViewOptions({ selectedCard, username, theme, showBorder, githubUsername, websiteUrl, selectedFont, showDifficultyGraph, /* activityTimeframe, */ /* componentPositions */ }:
-    { selectedCard: string, username: string, theme: string, showBorder: boolean, githubUsername: string, websiteUrl: string, selectedFont: string, showDifficultyGraph: boolean, activityTimeframe: string, componentPositions: Record<string, number> })
+export default function ExportViewOptions({ selectedCard, username, theme, showBorder, githubUsername, websiteUrl, selectedFont, showDifficultyGraph }:
+    { selectedCard: string, username: string, theme: string, showBorder: boolean, githubUsername: string, websiteUrl: string, selectedFont: string, showDifficultyGraph: boolean })
     : ReactNode | Promise<ReactNode> {
     const copyMarkdown = () => {
         const baseUrl = "https://leetcode-cards.vercel.app"
@@ -18,7 +18,7 @@ export default function ExportViewOptions({ selectedCard, username, theme, showB
         }) */
     }
 
-    const generateMarkdown = () => {
+    /* const generateMarkdown = () => {
         const baseUrl = "https://leetcode-cards.vercel.app"
 
         // Build position parameters
@@ -29,7 +29,7 @@ export default function ExportViewOptions({ selectedCard, username, theme, showB
         const cardMarkdown = `![LeetCode Stats](${baseUrl}/api/${selectedCard}?username=${username}&github=${githubUsername}&website=${encodeURIComponent(websiteUrl)}&theme=${theme}&border=${showBorder}&font=${selectedFont}&diffGraph=${showDifficultyGraph}&timeframe=${activityTimeframe}&${positionParams})`
 
         return cardMarkdown
-    }
+    } */
 
     /* timeframe: "${activityTimeframe}"
           component_positions: "${Object.entries(componentPositions)
@@ -159,10 +159,10 @@ jobs:
                     className="flex gap-2 cursor-pointer"
                     onClick={() => {
                         const baseUrl = "https://leetcode-cards.vercel.app"
-                        const positionParams = Object.entries(componentPositions)
+                       /*  const positionParams = Object.entries(componentPositions)
                             .map(([key, value]) => `${key}Position=${value}`)
-                            .join("&")
-                        const previewUrl = `${baseUrl}/api/${selectedCard}?username=${username}&github=${githubUsername}&website=${encodeURIComponent(websiteUrl)}&theme=${theme}&border=${showBorder}&font=${selectedFont}&diffGraph=${showDifficultyGraph}&timeframe=${activityTimeframe}&${positionParams}`
+                            .join("&") */
+                        const previewUrl = `${baseUrl}/api/${selectedCard}?username=${username}&github=${githubUsername}&website=${encodeURIComponent(websiteUrl)}&theme=${theme}&border=${showBorder}&font=${selectedFont}&diffGraph=${showDifficultyGraph}`/* &timeframe=${activityTimeframe}&${positionParams} */
                         window.open(previewUrl, "_blank")
                     }}
                 >

@@ -27,7 +27,7 @@ export default function CardPage() {
 
     return (
         <div className="p-6 max-w-lg mx-auto">
-            <MinimalCard stats={stats} theme="dark" showBorder={true} />
+            <MinimalCard stats={stats} theme="dark" showBorder={true} font={""} showDifficultyGraph={false} githubUsername={""} websiteUrl={""} />
         </div>
     )
 }

@@ -10,6 +10,7 @@ import Footer from "@/components/footer"
 import ExportViewOptions from "@/components/exportViewOptions"
 import { TextAnimate } from "@/components/magicui/text-animate"
 import BasicOptions from "@/components/basicOptions"
+import { ApiResponse } from "@/utils/interfaces"
 
 export default function LeetCodeCards() {
   const [username, setUsername] = useState<string>("fborges")
@@ -21,16 +22,16 @@ export default function LeetCodeCards() {
   const [loading, setLoading] = useState<boolean>(false)
   const [showBorder, setShowBorder] = useState<boolean>(true)
   const [selectedCard, setSelectedCard] = useState<string>("minimal")
-  const [stats, setStats] = useState<any | null>(null);
+  const [stats, setStats] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [url, setUrl] = useState<string>("https://leetcode.com/card/minimal?username=fborges");
+  /* const [url, setUrl] = useState<string>("https://leetcode.com/card/minimal?username=fborges"); */
 
   useEffect(() => {
     fetch(`/api/leetcode?username=${username}`)
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          /* console.log(data) */
+          console.log(data)
           setStats(data);
         } else {
           setError("User not found");
@@ -127,7 +128,7 @@ export default function LeetCodeCards() {
 
         {/* Options below the cards */}
         <div className="bg-muted/50 p-4 rounded-lg">
-          <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} /* activityTimeframe={activityTimeframe} */ githubUsername={githubUsername} websiteUrl={websiteUrl} selectedFont={selectedFont} showDifficultyGraph={showDifficultyGraph} /* componentPositions={componentPositions} */ />
+          <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} githubUsername={githubUsername} websiteUrl={websiteUrl} selectedFont={selectedFont} showDifficultyGraph={false} />
         </div>
       </main>
 

@@ -16,7 +16,7 @@ import {
 } from "recharts"
 
 interface StatsChartProps {
-    data: any[]
+    data: unknown[]
     type: "line" | "bar" | "pie"
     xKey?: string
     nameKey?: string
@@ -101,7 +101,7 @@ export default function StatsChart({ data, type, xKey, nameKey, valueKey, series
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {series.map((s, index) => (
+                    {series.map((s) => (/* , index */
                         <Line
                             key={s.key}
                             type="monotone"

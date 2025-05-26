@@ -80,6 +80,8 @@ export default async function handler(
 
     const json = await response.json();
 
+    console.log(json);
+
     if (!json || !json.data) {
       return res.status(500).json({ error: "Invalid response from LeetCode" });
     }
@@ -87,6 +89,6 @@ export default async function handler(
     const data: LeetCodeResponse = json.data;
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Server error" + error });
   }
 }

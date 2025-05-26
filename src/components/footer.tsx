@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Github, BarChart, FileCode, History, Moon, Sun } from "lucide-react"
+import { Github, FileCode, History, Moon, Sun } from "lucide-react"/* BarChart */
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import {
