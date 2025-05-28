@@ -33,7 +33,7 @@ export default function BasicOptions({ username, setUsername, githubUsername, se
                             <div className="flex gap-2">
                                 <Input
                                     id="username"
-                                    value={username}
+                                       value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     placeholder="Enter LeetCode username"
                                 />

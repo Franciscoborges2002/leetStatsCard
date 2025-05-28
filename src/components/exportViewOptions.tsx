@@ -4,12 +4,21 @@ import { ReactNode } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 
-export default function ExportViewOptions({ selectedCard, username, theme, showBorder, githubUsername, websiteUrl, selectedFont, showDifficultyGraph }:
-    { selectedCard: string, username: string, theme: string, showBorder: boolean, githubUsername: string, websiteUrl: string, selectedFont: string, showDifficultyGraph: boolean })
+export default function ExportViewOptions({ selectedCard, username, theme, showBorder, githubUsername, websiteUrl, selectedFont, showDifficultyGraph, previewURL }:
+    { selectedCard: string, username: string, theme: string, showBorder: boolean, githubUsername: string, websiteUrl: string, selectedFont: string, showDifficultyGraph: boolean, previewURL: string })
     : ReactNode | Promise<ReactNode> {
     const copyMarkdown = () => {
-        const baseUrl = "https://leetcode-cards.vercel.app"
-        const markdown = `![LeetCode Stats](${baseUrl}/api/${selectedCard}?username=${username}&theme=${theme}&border=${showBorder})`
+        const markdown = `![LeetCode Stats](${previewURL})`
+
+        navigator.clipboard.writeText(markdown)
+        /* toast({
+          title: "Copied to clipboard",
+          description: "Markdown has been copied to your clipboard",
+        }) */
+    }
+
+    const copyWebsite = () => {
+        const markdown = `<a hred="${previewURL}"><img src="${previewURL}" alt="LeetCode Stats" /></a>`
 
         navigator.clipboard.writeText(markdown)
         /* toast({
@@ -99,34 +108,67 @@ jobs:
 
     return (
         <div className="flex flex-col gap-5">
-            <div className="flex flex-row gap-2 align-center">
-                <IdCard />
-                <h2 className="text-xl font-medium mb-4">Add Card</h2>
+            <div className="flex flex-row gap-2 align-center justify-between">
+                <div className="flex flex-row gap-2 align-center">
+                    <IdCard />
+                    <h2 className="text-xl font-medium mb-4">Add Card</h2>
+                </div>
+                <Button
+                    variant="outline"
+                    className="flex gap-2 cursor-pointer"
+                    onClick={() => {
+                        /* const baseUrl = "https://leetcode-cards.vercel.app" */
+                        /*  const positionParams = Object.entries(componentPositions)
+                             .map(([key, value]) => `${key}Position=${value}`)
+                             .join("&") */
+                        window.open(previewURL, "_blank")
+                    }}
+                >
+                    <ExternalLink className="h-4 w-4" />
+                    Preview Badge
+                </Button>
             </div>
             <Tabs className="bg-muted/50 p-4 rounded-lg" defaultValue="static">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="static" className="cursor-pointer">Static</TabsTrigger>
                     <TabsTrigger value="autoUpdate" className="cursor-pointer">Auto Update</TabsTrigger>
                 </TabsList>
-                <TabsContent value={"static"}>
-                    <h3 className="text-lg font-medium mb-4">Add to your GitHub profile</h3>
-                    <div className="mb-4 bg-black/90 text-white p-3 rounded-md overflow-x-auto">
-                        <code className="text-sm">
-                            {`![LeetCode Stats](https://leetcode-cards.vercel.app/api/${selectedCard}?username=${username}&theme=${theme}&border=${showBorder})`}
-                        </code>
-                    </div>
+                <TabsContent value={"static"} className="flex flex-col gap-5">
+                    <div>
+                        <h3 className="text-lg font-medium mb-4">Add to your GitHub profile</h3>
+                        <div className="mb-4 bg-black/90 text-white p-3 rounded-md overflow-x-auto">
+                            <code className="text-sm">
+                                {`![LeetCode Stats](${previewURL})`}
+                            </code>
+                        </div>
 
-                    <div className="flex flex-row gap-5">
-                        <Button onClick={copyMarkdown} className="flex gap-2 w-2/6 cursor-pointer">
-                            <Clipboard className="h-4 w-4" />
-                            Copy Markdown
-                        </Button>
-                        <Button variant="outline" className="flex gap-2 w-2/6 cursor-pointer" asChild>
-                            <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">
-                                <Github className="h-4 w-4" />
-                                Edit GitHub Profile
-                            </a>
-                        </Button>
+                        <div className="flex flex-row sm:flex-col gap-5">
+                            <Button onClick={copyMarkdown} className="flex gap-2 w-2/6 cursor-pointer">
+                                <Clipboard className="h-4 w-4" />
+                                Copy Markdown
+                            </Button>
+                            <Button variant="outline" className="flex gap-2 w-2/6 cursor-pointer" asChild>
+                                <a href="https://github.com/settings/profile" target="_blank" rel="noopener noreferrer">
+                                    <Github className="h-4 w-4" />
+                                    Edit GitHub Profile
+                                </a>
+                            </Button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-medium mb-4">Add to your website</h3>
+                        <div className="mb-4 bg-black/90 text-white p-3 rounded-md overflow-x-auto">
+                            <code className="text-sm">
+                                {`<a hred="${previewURL}"><img src="${previewURL}" alt="LeetCode Stats" /></a>`}
+                            </code>
+                        </div>
+
+                        <div className="flex flex-row sm:flex-col gap-5">
+                            <Button onClick={copyWebsite} className="flex gap-2 w-2/6 cursor-pointer">
+                                <Clipboard className="h-4 w-4" />
+                                Copy
+                            </Button>
+                        </div>
                     </div>
                 </TabsContent>
                 <TabsContent value={"autoUpdate"}>
@@ -153,29 +195,15 @@ jobs:
                 </TabsContent>
             </Tabs>
 
-            <div className="flex gap-2">
-                <Button
-                    variant="outline"
-                    className="flex gap-2 cursor-pointer"
-                    onClick={() => {
-                        const baseUrl = "https://leetcode-cards.vercel.app"
-                       /*  const positionParams = Object.entries(componentPositions)
-                            .map(([key, value]) => `${key}Position=${value}`)
-                            .join("&") */
-                        const previewUrl = `${baseUrl}/api/${selectedCard}?username=${username}&github=${githubUsername}&website=${encodeURIComponent(websiteUrl)}&theme=${theme}&border=${showBorder}&font=${selectedFont}&diffGraph=${showDifficultyGraph}`/* &timeframe=${activityTimeframe}&${positionParams} */
-                        window.open(previewUrl, "_blank")
-                    }}
-                >
-                    <ExternalLink className="h-4 w-4" />
-                    Preview Badge
-                </Button>
-                {/* <Button variant="outline" className="flex gap-2" asChild>
+            {/*  <div className="flex gap-2">
+                
+                <Button variant="outline" className="flex gap-2" asChild>
                     <a href="#" target="_blank" rel="noopener noreferrer">
                         <Code className="h-4 w-4" />
                         View Source
                     </a>
-                </Button> */}
-            </div>
+                </Button> 
+            </div>*/}
         </div>
     )
 }
