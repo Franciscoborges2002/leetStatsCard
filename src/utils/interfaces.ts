@@ -44,4 +44,5 @@ export interface UserProfile {
     aboutMe?: string;
     school?: string;
     countryName?: string;
+    websites?: string[];
 }
