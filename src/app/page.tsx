@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Toaster } from "@/components/ui/sonner"
 import MinimalCard from "@/components/cards/minimalCard"
 /* import DetailedCard from "@/components/cards/detailedCard"
 import ThemedCard from "@/components/cards/themedCard" */
@@ -12,17 +11,30 @@ import { TextAnimate } from "@/components/magicui/text-animate"
 import BasicOptions from "@/components/basicOptions"
 import { ApiResponse } from "@/utils/interfaces"
 import { GitStarButton } from "@/components/eldoraui/gitstarbutton"
+import { toast } from "sonner"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Palette, Settings } from "lucide-react"
+import AdvancedOptions from "@/components/advancedOptions"
+import { CardType } from "@/enum/Card"
 
 export default function LeetCodeCards() {
   const [username, setUsername] = useState<string>("fborges")
-  const [githubUsername, setGithubUsername] = useState<string>("Franciscoborges2002")
-  const [websiteUrl, setWebsiteUrl] = useState<string>("https://fborges.dev")
   const [selectedFont, setSelectedFont] = useState<string>("inter")
-  const [showDifficultyGraph, setShowDifficultyGraph] = useState<boolean>(true)
   const [theme, setTheme] = useState<string>("light")
-  const [loading, setLoading] = useState<boolean>(false)
-  const [showBorder, setShowBorder] = useState<boolean>(true)
   const [selectedCard, setSelectedCard] = useState<string>("minimal")
+  const [cardType, setCardType] = useState<CardType>(CardType.MAIN_STATS);
+
+  /* Costumization */
+  const [showDifficultyGraph, setShowDifficultyGraph] = useState<boolean>(true)
+  const [showBorder, setShowBorder] = useState<boolean>(true)
+  const [showLinks, setShowLinks] = useState<boolean>(true)
+  const [showStreak, setShowStreak] = useState<boolean>(true)
+  const [borderRadius, setBorderRadius] = useState<number[]>([10]);
+  const [accentColor, setAccentColor] = useState<string>("#3b82f6")
+  const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100])
+
+  /* Page state handling */
+  const [loading, setLoading] = useState<boolean>(false)
   const [stats, setStats] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [previewURL, setPreviewURL] = useState<string>("");/* https://leetcodestatscard.tsi2market.com/ */
@@ -30,46 +42,66 @@ export default function LeetCodeCards() {
   useEffect(() => {
     const params = new URLSearchParams({
       username,
-      github: githubUsername,
-      /* website: websiteUrl, */
       font: selectedFont,
-      theme,
+      theme: theme,
       border: showBorder ? "true" : "false",
       graph: showDifficultyGraph ? "true" : "false",
+      links: showLinks ? "true" : "false",
+      streak: showStreak ? "true" : "false",
+      /* borderRadius: boderRadius, */
     })
-
-    console.log(params)
 
     const url = `http://localhost:3000/card?card=${selectedCard}&${params.toString()}`
     setPreviewURL(url)
-    console.log(url)
   }, [
     username,
-    githubUsername,
-    websiteUrl,
     selectedFont,
     theme,
     showBorder,
     selectedCard,
-    showDifficultyGraph
+    showDifficultyGraph,
+    showLinks,
+    showStreak/* ,
+    boderRadius */
   ])
 
   const fetchStats = () => {
     setLoading(true)
 
+    toast.info("Fetching data!", {
+      description: "Fetching data for " + username + " leetcode stats!",
+      duration: 2000,
+      closeButton: true
+    })
+
     fetch(`/api/leetcode?username=${username}`)
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          console.log(data)
+          toast.success("Data fetched!", {
+            description: "Data fetched for " + username + "!",
+            duration: 2000,
+            closeButton: true,
+            className: "bg-green-500"
+          })
           setStats(data);
           setLoading(false);
         } else {
+          toast.error("User not found!", {
+            description: username + " not found!",
+            duration: 2000,
+            closeButton: true
+          })
           setError("User not found");
           setLoading(false);
         }
       })
       .catch((err) => {
+        toast.error("EROOR!", {
+          description: err.message,
+          duration: 2000,
+          closeButton: true
+        })
         console.error(err);
         setError("Failed to fetch data");
         setLoading(false);
@@ -122,6 +154,27 @@ export default function LeetCodeCards() {
     streak: 15,
   } : null
 
+  const cardCustomizations = {
+    /* cardTitle,
+    showRanking,
+    showAcceptanceRate, */
+    theme,
+    showBorder,
+    showDifficultyGraph,
+    selectedFont,
+    showLinks,
+    showStreak,
+    borderRadius: borderRadius[0],
+    accentColor,
+    backgroundOpacity: backgroundOpacity[0],
+    /* cardWidth: cardWidth[0],
+    
+    showIcons,
+    compactMode,
+    animationStyle,
+    dateFormat,*/
+  }
+
   return (
     <div>
       <div className="px-50 w-full">
@@ -138,26 +191,54 @@ export default function LeetCodeCards() {
         <main className="w-full py-10 px-4">
           {/* Options above the cards */}
           <div>
-            <BasicOptions username={username} setUsername={setUsername} githubUsername={githubUsername} setGithubUsername={setGithubUsername}
-              fetchStats={fetchStats} loading={loading} theme={theme} setTheme={setTheme}
-              showBorder={showBorder} setShowBorder={setShowBorder} websiteUrl={websiteUrl} setWebsiteUrl={setWebsiteUrl}
-              selectedFont={selectedFont} setSelectedFont={setSelectedFont}
-              showDifficultyGraph={showDifficultyGraph} setShowDifficultyGraph={setShowDifficultyGraph} />
+            <Accordion type="multiple" defaultValue={["basic"]}>
+              <AccordionItem value="basic">
+                <AccordionTrigger className="py-4 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <Settings className="h-4 w-4" />
+                    <span>Basic Settings</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <BasicOptions username={username} setUsername={setUsername}
+                    fetchStats={fetchStats} loading={loading} theme={theme} setTheme={setTheme}
+                    showBorder={showBorder} setShowBorder={setShowBorder}
+                    selectedFont={selectedFont} setSelectedFont={setSelectedFont}
+                    showDifficultyGraph={showDifficultyGraph} setShowDifficultyGraph={setShowDifficultyGraph}
+                    showLinks={showLinks} setShowLinks={setShowLinks}
+                    showStreak={showStreak} setShowStreak={setShowStreak}
+                    cardType={cardType} setCardType={setCardType} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="advanced">
+                <AccordionTrigger className="py-4 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <Palette className="h-4 w-4" />
+                    <span>Advanced Customization</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <AdvancedOptions borderRadius={borderRadius} setBorderRadius={setBorderRadius}
+                    accentColor={accentColor} setAccentColor={setAccentColor}
+                    backgroundOpacity={backgroundOpacity} setBackgroundOpacity={setBackgroundOpacity} />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
 
           {/* Card display */}
           <div>
             <h2 className="text-lg font-medium mb-2">Card Type:</h2>
             <Tabs defaultValue="minimal" value={selectedCard} onValueChange={setSelectedCard}>
-              <TabsList className="grid w-full grid-cols-3 mb-8">
+              <TabsList className="grid w-full  mb-8">{/* grid-cols-3 */}
                 <TabsTrigger value="minimal" className="cursor-pointer">Minimal</TabsTrigger>
-                <TabsTrigger value="detailed" className="cursor-pointer">Detailed</TabsTrigger>
-                <TabsTrigger value="themed" className="cursor-pointer">Themed</TabsTrigger>
+                {/* <TabsTrigger value="detailed" className="cursor-pointer">Detailed</TabsTrigger>
+                <TabsTrigger value="themed" className="cursor-pointer">Themed</TabsTrigger> */}
               </TabsList>
 
               <div className="flex justify-center mb-8">
                 <TabsContent value="minimal" className="w-full max-w-md">
-                  <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} theme={theme} showBorder={showBorder} font={selectedFont} showDifficultyGraph={showDifficultyGraph} />
+                  <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} customizations={cardCustomizations} />
                 </TabsContent>
                 {/* <TabsContent value="detailed" className="w-full max-w-md">
                   <DetailedCard stats={leetcodeStats} theme={theme} showBorder={showBorder} />
@@ -171,13 +252,10 @@ export default function LeetCodeCards() {
 
           {/* Options below the cards */}
           <div className="bg-muted/50 p-4 rounded-lg">
-            <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} githubUsername={githubUsername} websiteUrl={websiteUrl} selectedFont={selectedFont} showDifficultyGraph={false} previewURL={previewURL} />
+            <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} selectedFont={selectedFont} showDifficultyGraph={false} previewURL={previewURL} />
           </div>
         </main>
       </div>
-
-
-      <Toaster />
       <Footer />
     </div>
   )

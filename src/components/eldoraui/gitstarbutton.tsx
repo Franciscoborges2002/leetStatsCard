@@ -31,7 +31,7 @@ export function GitStarButton() {
           ></path>
         </svg>
         <span className="font-display inline-block font-medium tabular-nums tracking-wider text-white">
-          0
+          1
         </span>
       </div>
     </a>

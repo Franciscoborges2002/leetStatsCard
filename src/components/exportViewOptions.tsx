@@ -3,28 +3,31 @@ import { Button } from "./ui/button";
 import { ReactNode } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { toast } from "sonner";
 
-export default function ExportViewOptions({ selectedCard, username, theme, showBorder, githubUsername, websiteUrl, selectedFont, showDifficultyGraph, previewURL }:
-    { selectedCard: string, username: string, theme: string, showBorder: boolean, githubUsername: string, websiteUrl: string, selectedFont: string, showDifficultyGraph: boolean, previewURL: string })
+export default function ExportViewOptions({ selectedCard, username, theme, showBorder, selectedFont, showDifficultyGraph, previewURL }:
+    { selectedCard: string, username: string, theme: string, showBorder: boolean, selectedFont: string, showDifficultyGraph: boolean, previewURL: string })
     : ReactNode | Promise<ReactNode> {
     const copyMarkdown = () => {
         const markdown = `![LeetCode Stats](${previewURL})`
 
         navigator.clipboard.writeText(markdown)
-        /* toast({
-          title: "Copied to clipboard",
-          description: "Markdown has been copied to your clipboard",
-        }) */
+        toast("Copied to clipboard", {
+            description: "Markdown has been copied to your clipboard!",
+            duration: 2000,
+            closeButton: true,
+        })
     }
 
     const copyWebsite = () => {
         const markdown = `<a hred="${previewURL}"><img src="${previewURL}" alt="LeetCode Stats" /></a>`
 
         navigator.clipboard.writeText(markdown)
-        /* toast({
-          title: "Copied to clipboard",
-          description: "Markdown has been copied to your clipboard",
-        }) */
+        toast("Copied to clipboard", {
+            description: "HTML code has been copied to your clipboard!",
+            duration: 2000,
+            closeButton: true,
+        })
     }
 
     /* const generateMarkdown = () => {
@@ -75,8 +78,6 @@ jobs:
         with:
           leetcode_username: "${username}"
           card_design: "${selectedCard}"
-          github_username: "${githubUsername}"
-          website_url: "${websiteUrl}"
           theme: "${theme}"
           show_border: ${showBorder}
           font: "${selectedFont}"
@@ -142,7 +143,7 @@ jobs:
                             </code>
                         </div>
 
-                        <div className="flex flex-row sm:flex-col gap-5">
+                        <div className="flex flex-row gap-5">
                             <Button onClick={copyMarkdown} className="flex gap-2 w-2/6 cursor-pointer">
                                 <Clipboard className="h-4 w-4" />
                                 Copy Markdown

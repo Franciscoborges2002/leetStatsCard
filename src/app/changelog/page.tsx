@@ -11,8 +11,8 @@ export default function ChangelogPage() {
             <div className="">
                 <header className="container mx-auto py-10 px-4 max-w-3xl">
                     <div className="mb-8">
-                        <Link href="/" className="cursor-text">
-                            <Button variant="ghost" size="sm" className="mb-4">
+                        <Link href="/" className="">
+                            <Button variant="ghost" size="sm" className="mb-4 cursor-pointer">
                                 <ArrowLeft className="mr-2 h-4 w-4" />
                                 Back to Generator
                             </Button>

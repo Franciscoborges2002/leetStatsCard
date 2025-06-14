@@ -1,7 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Github, Globe, Linkedin, Twitter } from "lucide-react"
+import { Globe, Linkedin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { SiGithub, SiLeetcode, SiX } from "@icons-pack/react-simple-icons"
 
 interface LeetCodeStats {
   username: string
@@ -29,30 +30,59 @@ interface QuestionCount {
 interface MinimalCardProps {
   statsUser: LeetCodeStats | null
   allQuestions: QuestionCount | null
-  theme: string
-  showBorder: boolean
-  font: string
-  showDifficultyGraph: boolean
+  customizations?: {
+    theme: string
+    showBorder: boolean
+    selectedFont: string
+    showDifficultyGraph: boolean
+    showStreak: boolean
+    showLinks: boolean
+    borderRadius: number
+    accentColor: string
+    backgroundOpacity: number
+    /* cardTitle: string
+    showRanking: boolean
+    showAcceptanceRate: boolean
+    
+    
+    
+    cardWidth: number
+    
+    
+    showIcons: boolean
+    compactMode: boolean
+    animationStyle: string
+    dateFormat: string */
+  }
 }
 
-export default function MinimalCard({ statsUser, allQuestions, theme, showBorder, font, showDifficultyGraph }: MinimalCardProps) {
+export default function MinimalCard({ statsUser, allQuestions, customizations }: MinimalCardProps) {
+
+  if(customizations === null || customizations === undefined){
+    return(
+      <div>
+        asd
+      </div>
+    )
+  }
+
   const getThemeClasses = () => {
-    switch (theme) {
+    switch (customizations?.theme) {
       case "light":
-        return "bg-slate-100 text-gray-800"
+        return "text-gray-800 bg-slate-100"
       case "dark":
-        return "bg-gray-900 text-white"
+        return "text-white bg-gray-900"
       case "github":
         return "bg-gray-50 border-gray-200 text-gray-400"
       case "leetcode":
         return "bg-[#fafafa] border-[#ffa116] text-gray-400"
       default:
-        return "bg-white text-gray-400"
+        return "text-gray-400+ bg-white"
     }
   }
 
   const getMutedTextColor = () => {
-    switch (theme) {
+    switch (customizations?.theme) {
       case "dark":
         return "text-gray-400"
       case "github":
@@ -65,7 +95,7 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
   }
 
   const getFontClasses = () => {
-    switch (font) {
+    switch (customizations?.selectedFont) {
       case "roboto":
         return "font-sans"
       case "mono":
@@ -79,11 +109,21 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
     }
   }
 
-  console.log(statsUser)
+  const cardStyle = {
+    borderRadius: `${customizations?.borderRadius}px`,
+    /* opacity: customizations?.backgroundOpacity/100, */
+    /* backgroundColor: */
+      /* theme === "dark"
+        ? `rgba(17, 24, 39, ${backgroundOpacity / 100})`
+        : theme === "github"
+          ? `rgba(249, 250, 251, ${backgroundOpacity / 100})`
+          : theme === "leetcode"
+            ? `rgba(250, 250, 250, ${backgroundOpacity / 100})`
+            : `rgba(255, 255, 255, ${backgroundOpacity / 100})`, */
+  }
 
   return (
     <div>
-
       {/* No user FOund */}
       {(statsUser === null) && (
         <Card className="w-full overflow-hidden bg-red-500/50 text-white border-2 border-red-400/50 shadow-none rounded-lg">
@@ -96,13 +136,14 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
         </Card>
       )}
       {(statsUser !== null && allQuestions !== null) && (
-        <Card className={`w-[500px] h-[250px] overflow-hidden ${!showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`}>
+        <Card className={`w-[500px] h-[250px] overflow-hidden ${!customizations?.showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`} style={cardStyle}>
           <CardContent className="p-6">
+            {/*             {getThemeClasses()} */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 {/* Icon */}
                 {statsUser.userAvatar ? (
-                  <div className="border-2 border-orange-500 rounded">
+                  <div className="border-2 border-orange-500 rounded" style={{ borderColor: customizations?.accentColor}}>
                     <Image src={statsUser.userAvatar} alt="LeetCode Stats" width={32} height={32} />
                   </div>
                 ) : (
@@ -124,7 +165,7 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
             </div>
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="text-center">
-                <div className="flex flex-row justify-center">
+                <div className="flex flex-row justify-center items-center">
                   <div className="text-2xl font-bold">{statsUser.totalSolved}</div>
                   <div className="flex flex-row justify-center text-xs text-muted-foreground"> /
                     <span>{allQuestions.totalQuestions}</span>
@@ -142,7 +183,7 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex justify-between items-center text-sm pb-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 <span className={`${getMutedTextColor()}`}>Easy: </span>
@@ -170,7 +211,7 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
             </div>
 
             {/* Show difficulty graph */}
-            {showDifficultyGraph && (
+            {customizations?.showDifficultyGraph && (
               <div className="space-y-2 mb-4">
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden flex">
                   <div
@@ -189,60 +230,70 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
               </div>
             )}
 
-            {/* Links section */}
-            {(statsUser.githubUrl || statsUser.linkedinUrl || statsUser.twitterUrl) && (
-              <div
-                className="flex items-center gap-3 text-xs pt-2 border-t"
-                style={{ color: `var(--${getMutedTextColor()})` }}
-              >
-                {statsUser.githubUrl && (
+            <div
+              className="flex items-center gap-3 text-xs pt-2 border-t"
+              style={{ color: `var(--${getMutedTextColor()})` }}
+            >
+              {/* Links section */}
+              {customizations?.showLinks && (
+                <div className="flex flex-row gap-3 text-xs items-center">
+                  {/* Leetcode profile */}
                   <Link
-                    href={statsUser.githubUrl}
+                    href={`https://leetcode.com/u/` + statsUser.username}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                   >
-                    <Github className="h-3 w-3" />
-                    {/* <span>{statsUser.githubUrl}</span> */}
+                    <SiLeetcode className="h-3 w-3" />
                   </Link>
-                )}
+                  {statsUser.githubUrl && (
+                    <Link
+                      href={statsUser.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                    >
+                      <SiGithub className="h-3 w-3" />
+                      {/* <span>{statsUser.githubUrl}</span> */}
+                    </Link>
+                  )}
 
-                {statsUser.linkedinUrl && (
-                  <Link
-                    href={statsUser.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                  >
-                    <Linkedin className="h-3 w-3" />
-                    {/* <span>{statsUser.linkedinUrl}</span> */}
-                  </Link>
-                )}
+                  {statsUser.linkedinUrl && (
+                    <Link
+                      href={statsUser.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                    >
+                      <Linkedin className="h-3 w-3" />
+                      {/* <span>{statsUser.linkedinUrl}</span> */}
+                    </Link>
+                  )}
 
-                {statsUser.twitterUrl && (
-                  <Link
-                    href={statsUser.twitterUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                  >
-                    <Twitter className="h-3 w-3" />
-                    {/* <span>{statsUser.twitterUrl}</span> */}
-                  </Link>
-                )}
+                  {statsUser.twitterUrl && (
+                    <Link
+                      href={statsUser.twitterUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                    >
+                      <SiX className="h-3 w-3" />
+                      {/* <span>{statsUser.twitterUrl}</span> */}
+                    </Link>
+                  )}
 
-                {statsUser.websites && (
-                  <Link
-                    href={statsUser.websites[0]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                  >
-                    <Globe className="h-3 w-3" />
-                    {/* <span>{statsUser.twitterUrl}</span> */}
-                  </Link>
-                )}
-                {/* {websiteUrl && (
+                  {statsUser.websites && (
+                    <Link
+                      href={statsUser.websites[0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                    >
+                      <Globe className="h-3 w-3" />
+                      {/* <span>{statsUser.twitterUrl}</span> */}
+                    </Link>
+                  )}
+                  {/* {websiteUrl && (
                   <Link
                     href={websiteUrl}
                     target="_blank"
@@ -253,12 +304,16 @@ export default function MinimalCard({ statsUser, allQuestions, theme, showBorder
                     <span>{new URL(websiteUrl).hostname}</span>
                   </Link>
                 )} */}
+
+                </div>
+              )}
+              {customizations?.showStreak && (
                 <div className="ml-auto flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                   <span className={`${getMutedTextColor()}`}>{statsUser.streak} day streak</span>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </CardContent>
         </Card>
       )}

@@ -56,7 +56,7 @@ export default function StatsPage() {
             <header>
                 <div className="mb-8">
                     <Link href="/">
-                        <Button variant="ghost" size="sm" className="mb-4">
+                        <Button variant="ghost" size="sm" className="mb-4 cursor-pointer">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Back to Generator
                         </Button>
