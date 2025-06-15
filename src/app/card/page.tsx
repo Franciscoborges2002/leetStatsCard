@@ -18,20 +18,36 @@ export default function CardPage() {
     const [username, setUsername] = useState('')
     const [cardType, setCardType] = useState('minimal')
     const [theme, setTheme] = useState('dark')
-    const [showBorder, setShowBorder] = useState(true)
-    const [showDifficultyGraph, setShowDifficultyGraph] = useState(false)
-    const [font, setFont] = useState('')
+    const [selectedFont, setSelectedFont] = useState('')
+
+    /* Costumization */
+    const [showDifficultyGraph, setShowDifficultyGraph] = useState<boolean>(true)
+    const [showBorder, setShowBorder] = useState<boolean>(true)
+    const [showLinks, setShowLinks] = useState<boolean>(true)
+    const [showIcons, setShowIcons] = useState<boolean>(true)
+    const [showStreak, setShowStreak] = useState<boolean>(true)
+    const [borderRadius, setBorderRadius] = useState<number[]>([10]);
+    const [accentColor, setAccentColor] = useState<string>("#3b82f6")
+    const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100])
 
     useEffect(() => {
         if (!searchParams) return
+        const getNumberArray = (val: string | null): number[] =>
+            val ? val.split(",").map(num => parseInt(num)) : []
 
         const usernameParam = searchParams.get('username') || ''
         setUsername(usernameParam)
         setCardType(searchParams.get('card') || 'minimal')
-        setTheme(searchParams.get('type') || 'dark')
-        setShowBorder(searchParams.get('showBorder') === 'true')
+        setTheme(searchParams.get('theme') || 'dark')
+        setShowBorder(searchParams.get('border') === 'true')
         setShowDifficultyGraph(searchParams.get('showDifficultyGraph') === 'true')
-        setFont(searchParams.get('font') || '')
+        setSelectedFont(searchParams.get('font') || '')
+        setShowLinks(searchParams.get("links") === 'true')
+        setShowIcons(searchParams.get("icons") === 'true')
+        setShowStreak(searchParams.get("streak") === 'true')
+        setBorderRadius(getNumberArray(searchParams.get("borderRadius")) || [10])
+        setAccentColor(searchParams.get("accentColor") || "#3b82f6")
+        setBackgroundOpacity(getNumberArray(searchParams.get("backgroundOpacity")) || [100])
     }, [searchParams])
 
     useEffect(() => {
@@ -45,6 +61,7 @@ export default function CardPage() {
                 const res = await fetch(`/api/leetcode?username=${username}`)
                 if (!res.ok) throw new Error(`API error: ${res.status}`)
                 const data = await res.json()
+                console.log(data)
                 setStats(data)
             } catch (err: any) {
                 setError(err.message || 'Unknown error')
@@ -104,10 +121,32 @@ export default function CardPage() {
         streak: 15,
     } : null
 
+    const cardCustomizations = {
+        /* cardTitle,
+        showRanking,
+        showAcceptanceRate, */
+        theme,
+        showBorder,
+        showDifficultyGraph,
+        selectedFont,
+        showLinks,
+        showStreak,
+        showIcons,
+        borderRadius: borderRadius[0],
+        accentColor,
+        backgroundOpacity: backgroundOpacity[0],
+        /* cardWidth: cardWidth[0],
+        
+        
+        compactMode,
+        animationStyle,
+        dateFormat,*/
+    }
+
     return (
         <div className="">
             {cardType === 'minimal' && (
-                <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} theme={theme} showBorder={showBorder} font={font} showDifficultyGraph={showDifficultyGraph} />
+                <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} customizations={cardCustomizations} />
             )}
         </div>
     )

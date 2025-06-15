@@ -11,6 +11,7 @@ export interface QuestionCount {
 export interface MatchedUser {
     problemsSolvedBeatsStats: ProblemSolvedStat[];
     submitStatsGlobal: SubmitStatsGlobal;
+    submitStats: SubmitData;
     githubUrl: string | null;
     twitterUrl: string | null;
     linkedinUrl: string | null;
@@ -46,3 +47,14 @@ export interface UserProfile {
     countryName?: string;
     websites?: string[];
 }
+
+export interface SubmissionStats{
+    difficulty: "Easy" | "Medium" | "Hard" | "All";
+    count: number;
+    submissions: number;
+};
+
+export interface SubmitData {
+    totalSubmissionNum: SubmissionStats[];
+    acSubmissionNum: SubmissionStats[];
+};

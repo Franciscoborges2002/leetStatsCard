@@ -25,9 +25,11 @@ interface BasicOptionsProps {
     setShowStreak: (showStreak: boolean) => void;
     cardType: CardType;
     setCardType: (cardType: CardType) => void;
+    showIcons: boolean;
+    setShowIcons: (showIcons: boolean) => void;
 }
 
-export default function BasicOptions({ username, setUsername, fetchStats, loading, theme, setTheme, showBorder, setShowBorder, selectedFont, setSelectedFont, showDifficultyGraph, setShowDifficultyGraph, showLinks, setShowLinks, showStreak, setShowStreak, cardType, setCardType }
+export default function BasicOptions({ username, setUsername, fetchStats, loading, theme, setTheme, showBorder, setShowBorder, selectedFont, setSelectedFont, showDifficultyGraph, setShowDifficultyGraph, showLinks, setShowLinks, showStreak, setShowStreak, cardType, setCardType, showIcons, setShowIcons }
     : BasicOptionsProps) {
     return (
         <div>
@@ -130,7 +132,7 @@ export default function BasicOptions({ username, setUsername, fetchStats, loadin
                     </div>
 
                     <div className="flex items-start space-x-2">
-                        <Switch id="showStreak" checked={showStreak} onCheckedChange={setShowStreak} className="mt-1" />
+                        <Switch id="showStreak" checked={showStreak} onCheckedChange={setShowStreak} className="cursor-pointer" />
                         <div>
                             <Label htmlFor="showStreak" className="font-medium">
                                 Show Streak
@@ -144,6 +146,14 @@ export default function BasicOptions({ username, setUsername, fetchStats, loadin
                         <div>
                             <Label htmlFor="links">Show Links</Label>
                             <p className="text-sm text-muted-foreground">Display external links</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start space-x-2">
+                        <Switch id="links" checked={showIcons} onCheckedChange={setShowIcons} className="cursor-pointer" />
+                        <div>
+                            <Label htmlFor="links">Show Icons</Label>
+                            <p className="text-sm text-muted-foreground">Display Icons</p>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Globe, Linkedin } from "lucide-react"
+import { Flame, Globe, Linkedin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { SiGithub, SiLeetcode, SiX } from "@icons-pack/react-simple-icons"
@@ -40,6 +40,7 @@ interface MinimalCardProps {
     borderRadius: number
     accentColor: string
     backgroundOpacity: number
+    showIcons: boolean
     /* cardTitle: string
     showRanking: boolean
     showAcceptanceRate: boolean
@@ -49,7 +50,7 @@ interface MinimalCardProps {
     cardWidth: number
     
     
-    showIcons: boolean
+    
     compactMode: boolean
     animationStyle: string
     dateFormat: string */
@@ -58,8 +59,8 @@ interface MinimalCardProps {
 
 export default function MinimalCard({ statsUser, allQuestions, customizations }: MinimalCardProps) {
 
-  if(customizations === null || customizations === undefined){
-    return(
+  if (customizations === null || customizations === undefined) {
+    return (
       <div>
         asd
       </div>
@@ -113,13 +114,13 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
     borderRadius: `${customizations?.borderRadius}px`,
     /* opacity: customizations?.backgroundOpacity/100, */
     /* backgroundColor: */
-      /* theme === "dark"
-        ? `rgba(17, 24, 39, ${backgroundOpacity / 100})`
-        : theme === "github"
-          ? `rgba(249, 250, 251, ${backgroundOpacity / 100})`
-          : theme === "leetcode"
-            ? `rgba(250, 250, 250, ${backgroundOpacity / 100})`
-            : `rgba(255, 255, 255, ${backgroundOpacity / 100})`, */
+    /* theme === "dark"
+      ? `rgba(17, 24, 39, ${backgroundOpacity / 100})`
+      : theme === "github"
+        ? `rgba(249, 250, 251, ${backgroundOpacity / 100})`
+        : theme === "leetcode"
+          ? `rgba(250, 250, 250, ${backgroundOpacity / 100})`
+          : `rgba(255, 255, 255, ${backgroundOpacity / 100})`, */
   }
 
   return (
@@ -143,7 +144,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
               <div className="flex items-center gap-2">
                 {/* Icon */}
                 {statsUser.userAvatar ? (
-                  <div className="border-2 border-orange-500 rounded" style={{ borderColor: customizations?.accentColor}}>
+                  <div className="border-2 border-orange-500 rounded" style={{ borderColor: customizations?.accentColor }}>
                     <Image src={statsUser.userAvatar} alt="LeetCode Stats" width={32} height={32} />
                   </div>
                 ) : (
@@ -178,8 +179,8 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                 <div className="text-xs text-muted-foreground">Ranking</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold">{statsUser.streak}</div>
-                <div className="text-xs text-muted-foreground">Streak</div>
+                <div className="text-2xl font-bold">{statsUser.acceptanceRate} %</div>
+                <div className="text-xs text-muted-foreground">Acceptance rate</div>
               </div>
             </div>
 
@@ -231,7 +232,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
             )}
 
             <div
-              className="flex items-center gap-3 text-xs pt-2 border-t"
+              className="flex items-center flex-wrap gap-3 text-xs pt-2 border-t"
               style={{ color: `var(--${getMutedTextColor()})` }}
             >
               {/* Links section */}
@@ -244,7 +245,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                   >
-                    <SiLeetcode className="h-3 w-3" />
+                    {customizations.showIcons ? (<SiLeetcode className="h-3 w-3" />) : (<span>{statsUser.username}</span>)}
                   </Link>
                   {statsUser.githubUrl && (
                     <Link
@@ -253,7 +254,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                     >
-                      <SiGithub className="h-3 w-3" />
+                      {customizations.showIcons ? (<SiGithub className="h-3 w-3" />) : (<p>gh.com/{statsUser.githubUrl.split("/").pop()}</p>)}
                       {/* <span>{statsUser.githubUrl}</span> */}
                     </Link>
                   )}
@@ -265,7 +266,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                     >
-                      <Linkedin className="h-3 w-3" />
+                      {customizations.showIcons ? (<Linkedin className="h-3 w-3" />) : (<p>gh.com/{statsUser.linkedinUrl}</p>)}
                       {/* <span>{statsUser.linkedinUrl}</span> */}
                     </Link>
                   )}
@@ -277,7 +278,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                     >
-                      <SiX className="h-3 w-3" />
+                      {customizations.showIcons ? (<SiX className="h-3 w-3" />) : (<p>x.com/{statsUser.twitterUrl}</p>)}
                       {/* <span>{statsUser.twitterUrl}</span> */}
                     </Link>
                   )}
@@ -289,7 +290,8 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                     >
-                      <Globe className="h-3 w-3" />
+                      {customizations.showIcons ? (<Globe className="h-3 w-3" />) : (<p>{new URL(statsUser.websites[0]).hostname.replace(/^www\./, "")}</p>)}
+
                       {/* <span>{statsUser.twitterUrl}</span> */}
                     </Link>
                   )}
@@ -308,9 +310,9 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                 </div>
               )}
               {customizations?.showStreak && (
-                <div className="ml-auto flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className={`${getMutedTextColor()}`}>{statsUser.streak} day streak</span>
+                <div className="ml-auto flex items-center gap-1 hover:text-muted-foreground transition-colors cursor-pointer">
+                  <Flame className="h-3 w-3" />
+                  <span className={`${getMutedTextColor()} hover:text-muted-foreground transition-colors cursor-pointer`}>{statsUser.streak} day streak</span>
                 </div>
               )}
             </div>

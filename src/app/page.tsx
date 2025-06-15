@@ -16,6 +16,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Palette, Settings } from "lucide-react"
 import AdvancedOptions from "@/components/advancedOptions"
 import { CardType } from "@/enum/Card"
+import { getGlobalAcceptanceRate } from "@/utils/utils"
 
 export default function LeetCodeCards() {
   const [username, setUsername] = useState<string>("fborges")
@@ -28,6 +29,7 @@ export default function LeetCodeCards() {
   const [showDifficultyGraph, setShowDifficultyGraph] = useState<boolean>(true)
   const [showBorder, setShowBorder] = useState<boolean>(true)
   const [showLinks, setShowLinks] = useState<boolean>(true)
+  const [showIcons, setShowIcons] = useState<boolean>(true)
   const [showStreak, setShowStreak] = useState<boolean>(true)
   const [borderRadius, setBorderRadius] = useState<number[]>([10]);
   const [accentColor, setAccentColor] = useState<string>("#3b82f6")
@@ -48,6 +50,7 @@ export default function LeetCodeCards() {
       graph: showDifficultyGraph ? "true" : "false",
       links: showLinks ? "true" : "false",
       streak: showStreak ? "true" : "false",
+      icons: showIcons ? "true" : "false",
       /* borderRadius: boderRadius, */
     })
 
@@ -61,7 +64,8 @@ export default function LeetCodeCards() {
     selectedCard,
     showDifficultyGraph,
     showLinks,
-    showStreak/* ,
+    showStreak,
+    showIcons/* ,
     boderRadius */
   ])
 
@@ -84,6 +88,7 @@ export default function LeetCodeCards() {
             closeButton: true,
             className: "bg-green-500"
           })
+          console.log(data)
           setStats(data);
           setLoading(false);
         } else {
@@ -148,8 +153,8 @@ export default function LeetCodeCards() {
     twitterUrl: stats.matchedUser.twitterUrl || null,
     websites: stats.matchedUser.profile.websites || undefined,
     userAvatar: stats.matchedUser.profile.userAvatar || undefined,
-    ranking: stats.matchedUser.profile.ranking, // you can calculate or fetch this if needed
-    acceptanceRate: 67.8, // replace with real value if available
+    ranking: stats.matchedUser.profile.ranking,
+    acceptanceRate: getGlobalAcceptanceRate(stats.matchedUser.submitStats),
     contributionPoints: 2345,
     streak: 15,
   } : null
@@ -164,12 +169,13 @@ export default function LeetCodeCards() {
     selectedFont,
     showLinks,
     showStreak,
+    showIcons,
     borderRadius: borderRadius[0],
     accentColor,
     backgroundOpacity: backgroundOpacity[0],
     /* cardWidth: cardWidth[0],
     
-    showIcons,
+    
     compactMode,
     animationStyle,
     dateFormat,*/
@@ -207,7 +213,8 @@ export default function LeetCodeCards() {
                     showDifficultyGraph={showDifficultyGraph} setShowDifficultyGraph={setShowDifficultyGraph}
                     showLinks={showLinks} setShowLinks={setShowLinks}
                     showStreak={showStreak} setShowStreak={setShowStreak}
-                    cardType={cardType} setCardType={setCardType} />
+                    cardType={cardType} setCardType={setCardType}
+                    showIcons={showIcons} setShowIcons={setShowIcons} />
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="advanced">

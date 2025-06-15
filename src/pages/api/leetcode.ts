@@ -27,11 +27,38 @@ export default async function handler(
       allQuestionsCount {    
           difficulty    
           count  
-          }
+      }
+      streakCounter {
+        streakCount
+        daysSkipped
+        currentDayCompleted
+      }
       matchedUser(username: $username) {
         problemsSolvedBeatsStats { 
           difficulty
           percentage    
+        }
+        submitStats {
+            totalSubmissionNum {
+                difficulty
+                count
+                submissions
+            }
+            acSubmissionNum {
+                difficulty
+                count
+                submissions
+            }
+        }
+        problemsSolvedBeatsStats {
+          difficulty
+          percentage
+        }
+        submitStatsGlobal {
+          acSubmissionNum {
+            difficulty
+            count
+          }
         }
         submitStatsGlobal {
           acSubmissionNum {        
@@ -53,14 +80,8 @@ export default async function handler(
           company
           jobTitle
           skillTags
-          postViewCount
-          postViewCountDiff
           reputation
           reputationDiff
-          solutionCount
-          solutionCountDiff
-          categoryDiscussCount
-          categoryDiscussCountDiff
         }
       }             
     } 
