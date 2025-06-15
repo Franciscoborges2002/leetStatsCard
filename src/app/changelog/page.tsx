@@ -31,12 +31,11 @@ export default function ChangelogPage() {
                             <h2 className="text-2xl font-bold">Initial Release</h2>
                             <div className="text-sm font-mono bg-muted px-2 py-1 rounded">v1.0.0</div>
                         </div>
-                        <div className="text-sm text-muted-foreground mb-4">Released on March 25, 2025</div>
+                        <div className="text-sm text-muted-foreground mb-4">Released on July 16, 2025</div>
                         <ul className="space-y-2 list-disc pl-5">
-                            <li>Launched with three card designs: Minimal, Detailed, and Themed</li>
+                            <li>Launched with one card designs: Minimal</li>
                             <li>Basic LeetCode stats display</li>
                             <li>Simple theme customization</li>
-                            <li>Markdown generation for GitHub profiles</li>
                             <li>Copy to clipboard functionality</li>
                         </ul>
                     </div>
