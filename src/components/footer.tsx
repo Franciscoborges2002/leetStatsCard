@@ -44,7 +44,7 @@ export default function Footer() {
                         {[
                             { href: "/changelog", label: "Changelog", icon: History },
                             /* { href: "/stats", label: "Stats", icon: BarChart }, */
-                            { href: "/apidocs", label: "API Docs", icon: FileCode },
+                            /* { href: "/apidocs", label: "API Docs", icon: FileCode }, */
                         ].map(({ href, label, icon: Icon }) => (
                             <Link
                                 key={label}
