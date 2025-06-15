@@ -162,11 +162,11 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                 </div>
                 <div ></div>
                 <Link
-                  href="https://leetstatscard.com"
+                  href="https://leetcodestatscard.fborges.dev/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 hover:text-orange-500 transition-colors">
-                  <span className="text-xs text-muted-foreground">leetstatscard.com</span>
+                  <span className="text-xs text-muted-foreground">leetcodestatscard.fborges.dev</span>
                 </Link>
               </div>
               <div className="grid grid-cols-3 gap-4 mb-4">

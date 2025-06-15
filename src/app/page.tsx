@@ -54,7 +54,7 @@ export default function LeetCodeCards() {
       icons: showIcons ? "true" : "false",
     })
 
-    const url = `http://localhost:3000/card?card=${selectedCard}&${params.toString()}`
+    const url = `https://leetcodestatscard.fborges.dev/card?card=${selectedCard}&${params.toString()}`
     setPreviewURL(url)
   }, [
     username,
