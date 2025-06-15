@@ -1,8 +1,11 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Flame, Globe, Linkedin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { SiGithub, SiLeetcode, SiX } from "@icons-pack/react-simple-icons"
+import { Suspense } from "react"
 
 interface LeetCodeStats {
   username: string
@@ -124,178 +127,180 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
   }
 
   return (
-    <div>
-      {/* No user FOund */}
-      {(statsUser === null) && (
-        <Card className="w-full overflow-hidden bg-red-500/50 text-white border-2 border-red-400/50 shadow-none rounded-lg">
-          <CardContent className="p-6 flex flex-col items-center justify-center min-h-[220px]">
-            <div className="text-2xl font-bold mb-2">🚫 User Not Found</div>
-            <p className="text-sm text-white/90 text-center">
-              The LeetCode user you requested does not exist or could not be found.
-            </p>
-          </CardContent>
-        </Card>
-      )}
-      {(statsUser !== null && allQuestions !== null) && (
-        <Card className={`w-[500px] h-[250px] overflow-hidden ${!customizations?.showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`} style={cardStyle}>
-          <CardContent className="p-6">
-            {/*             {getThemeClasses()} */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                {/* Icon */}
-                {statsUser.userAvatar ? (
-                  <div className="border-2 border-orange-500 rounded" style={{ borderColor: customizations?.accentColor }}>
-                    <Image src={statsUser.userAvatar} alt="LeetCode Stats" width={32} height={32} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {/* No user FOund */}
+        {(statsUser === null) && (
+
+          <Card className="w-full overflow-hidden bg-red-500/50 text-white border-2 border-red-400/50 shadow-none rounded-lg">
+            <CardContent className="p-6 flex flex-col items-center justify-center min-h-[220px]">
+              <div className="text-2xl font-bold mb-2">🚫 User Not Found</div>
+              <p className="text-sm text-white/90 text-center">
+                The LeetCode user you requested does not exist or could not be found.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+        {(statsUser !== null && allQuestions !== null) && (
+          <Card className={`w-[500px] h-[250px] overflow-hidden ${!customizations?.showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`} style={cardStyle}>
+            <CardContent className="p-6">
+              {/*             {getThemeClasses()} */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  {/* Icon */}
+                  {statsUser.userAvatar ? (
+                    <div className="border-2 border-orange-500 rounded" style={{ borderColor: customizations?.accentColor }}>
+                      <Image src={statsUser.userAvatar} alt="LeetCode Stats" width={32} height={32} />
+                    </div>
+                  ) : (
+                    <div className="border-2 border-orange-500 rounded">
+                      <Image src="./logo.svg" alt="LeetCode Stats" width={32} height={32} />
+                    </div>
+                  )}
+
+                  <h3 className="font-bold">{statsUser.username}</h3>
+                </div>
+                <div ></div>
+                <Link
+                  href="https://leetstatscard.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 hover:text-orange-500 transition-colors">
+                  <span className="text-xs text-muted-foreground">leetstatscard.com</span>
+                </Link>
+              </div>
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="text-center">
+                  <div className="flex flex-row justify-center items-center">
+                    <div className="text-2xl font-bold">{statsUser.totalSolved}</div>
+                    <div className="flex flex-row justify-center text-xs text-muted-foreground"> /
+                      <span>{allQuestions.totalQuestions}</span>
+                    </div>
                   </div>
-                ) : (
-                  <div className="border-2 border-orange-500 rounded">
-                    <Image src="./logo.svg" alt="LeetCode Stats" width={32} height={32} />
-                  </div>
-                )}
-
-                <h3 className="font-bold">{statsUser.username}</h3>
+                  <div className="text-xs text-muted-foreground">Problems</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{statsUser.ranking}</div>
+                  <div className="text-xs text-muted-foreground">Ranking</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{statsUser.acceptanceRate} %</div>
+                  <div className="text-xs text-muted-foreground">Acceptance rate</div>
+                </div>
               </div>
-              <div ></div>
-              <Link
-                href="https://leetstatscard.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-orange-500 transition-colors">
-                <span className="text-xs text-muted-foreground">leetstatscard.com</span>
-              </Link>
-            </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center">
-                <div className="flex flex-row justify-center items-center">
-                  <div className="text-2xl font-bold">{statsUser.totalSolved}</div>
-                  <div className="flex flex-row justify-center text-xs text-muted-foreground"> /
-                    <span>{allQuestions.totalQuestions}</span>
+
+              <div className="flex justify-between items-center text-sm pb-2">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className={`${getMutedTextColor()}`}>Easy: </span>
+                  <span className="font-medium">{statsUser.easySolved}</span>
+                  <div className="flex flex-row justify-center text-xs text-muted-foreground">
+                    / <span>{allQuestions.totalEasy}</span>
                   </div>
                 </div>
-                <div className="text-xs text-muted-foreground">Problems</div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                  <span className={`${getMutedTextColor()}`}>Medium: </span>
+                  <span className="font-medium">{statsUser.mediumSolved}</span>
+                  <div className="flex flex-row justify-center text-xs text-muted-foreground">
+                    / <span>{allQuestions.totalMedium}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                  <span className={`${getMutedTextColor()}`}>Hard: </span>
+                  <span className="font-medium">{statsUser.hardSolved}</span>
+                  <div className="flex flex-row justify-center text-xs text-muted-foreground">
+                    / <span>{allQuestions.totalHard}</span>
+                  </div>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">{statsUser.ranking}</div>
-                <div className="text-xs text-muted-foreground">Ranking</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">{statsUser.acceptanceRate} %</div>
-                <div className="text-xs text-muted-foreground">Acceptance rate</div>
-              </div>
-            </div>
 
-            <div className="flex justify-between items-center text-sm pb-2">
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className={`${getMutedTextColor()}`}>Easy: </span>
-                <span className="font-medium">{statsUser.easySolved}</span>
-                <div className="flex flex-row justify-center text-xs text-muted-foreground">
-                  / <span>{allQuestions.totalEasy}</span>
+              {/* Show difficulty graph */}
+              {customizations?.showDifficultyGraph && (
+                <div className="space-y-2 mb-4">
+                  <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden flex">
+                    <div
+                      className="bg-green-500 h-full"
+                      style={{ width: `${(statsUser.easySolved / statsUser.totalSolved) * 100}%` }}
+                    ></div>
+                    <div
+                      className="bg-yellow-500 h-full"
+                      style={{ width: `${(statsUser.mediumSolved / statsUser.totalSolved) * 100}%` }}
+                    ></div>
+                    <div
+                      className="bg-red-500 h-full"
+                      style={{ width: `${(statsUser.hardSolved / statsUser.totalSolved) * 100}%` }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <span className={`${getMutedTextColor()}`}>Medium: </span>
-                <span className="font-medium">{statsUser.mediumSolved}</span>
-                <div className="flex flex-row justify-center text-xs text-muted-foreground">
-                  / <span>{allQuestions.totalMedium}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                <span className={`${getMutedTextColor()}`}>Hard: </span>
-                <span className="font-medium">{statsUser.hardSolved}</span>
-                <div className="flex flex-row justify-center text-xs text-muted-foreground">
-                  / <span>{allQuestions.totalHard}</span>
-                </div>
-              </div>
-            </div>
+              )}
 
-            {/* Show difficulty graph */}
-            {customizations?.showDifficultyGraph && (
-              <div className="space-y-2 mb-4">
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden flex">
-                  <div
-                    className="bg-green-500 h-full"
-                    style={{ width: `${(statsUser.easySolved / statsUser.totalSolved) * 100}%` }}
-                  ></div>
-                  <div
-                    className="bg-yellow-500 h-full"
-                    style={{ width: `${(statsUser.mediumSolved / statsUser.totalSolved) * 100}%` }}
-                  ></div>
-                  <div
-                    className="bg-red-500 h-full"
-                    style={{ width: `${(statsUser.hardSolved / statsUser.totalSolved) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-            )}
-
-            <div
-              className="flex items-center flex-wrap gap-3 text-xs pt-2 border-t"
-              style={{ color: `var(--${getMutedTextColor()})` }}
-            >
-              {/* Links section */}
-              {customizations?.showLinks && (
-                <div className="flex flex-row gap-3 text-xs items-center">
-                  {/* Leetcode profile */}
-                  <Link
-                    href={`https://leetcode.com/u/` + statsUser.username}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                  >
-                    {customizations.showIcons ? (<SiLeetcode className="h-3 w-3" />) : (<span>{statsUser.username}</span>)}
-                  </Link>
-                  {statsUser.githubUrl && (
+              <div
+                className="flex items-center flex-wrap gap-3 text-xs pt-2 border-t"
+                style={{ color: `var(--${getMutedTextColor()})` }}
+              >
+                {/* Links section */}
+                {customizations?.showLinks && (
+                  <div className="flex flex-row gap-3 text-xs items-center">
+                    {/* Leetcode profile */}
                     <Link
-                      href={statsUser.githubUrl}
+                      href={`https://leetcode.com/u/` + statsUser.username}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
                     >
-                      {customizations.showIcons ? (<SiGithub className="h-3 w-3" />) : (<p>gh.com/{statsUser.githubUrl.split("/").pop()}</p>)}
-                      {/* <span>{statsUser.githubUrl}</span> */}
+                      {customizations.showIcons ? (<SiLeetcode className="h-3 w-3" />) : (<span>{statsUser.username}</span>)}
                     </Link>
-                  )}
+                    {statsUser.githubUrl && (
+                      <Link
+                        href={statsUser.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                      >
+                        {customizations.showIcons ? (<SiGithub className="h-3 w-3" />) : (<p>gh.com/{statsUser.githubUrl.split("/").pop()}</p>)}
+                        {/* <span>{statsUser.githubUrl}</span> */}
+                      </Link>
+                    )}
 
-                  {statsUser.linkedinUrl && (
-                    <Link
-                      href={statsUser.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                    >
-                      {customizations.showIcons ? (<Linkedin className="h-3 w-3" />) : (<p>gh.com/{statsUser.linkedinUrl}</p>)}
-                      {/* <span>{statsUser.linkedinUrl}</span> */}
-                    </Link>
-                  )}
+                    {statsUser.linkedinUrl && (
+                      <Link
+                        href={statsUser.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                      >
+                        {customizations.showIcons ? (<Linkedin className="h-3 w-3" />) : (<p>gh.com/{statsUser.linkedinUrl}</p>)}
+                        {/* <span>{statsUser.linkedinUrl}</span> */}
+                      </Link>
+                    )}
 
-                  {statsUser.twitterUrl && (
-                    <Link
-                      href={statsUser.twitterUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                    >
-                      {customizations.showIcons ? (<SiX className="h-3 w-3" />) : (<p>x.com/{statsUser.twitterUrl}</p>)}
-                      {/* <span>{statsUser.twitterUrl}</span> */}
-                    </Link>
-                  )}
+                    {statsUser.twitterUrl && (
+                      <Link
+                        href={statsUser.twitterUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                      >
+                        {customizations.showIcons ? (<SiX className="h-3 w-3" />) : (<p>x.com/{statsUser.twitterUrl}</p>)}
+                        {/* <span>{statsUser.twitterUrl}</span> */}
+                      </Link>
+                    )}
 
-                  {statsUser.websites && (
-                    <Link
-                      href={statsUser.websites[0]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
-                    >
-                      {customizations.showIcons ? (<Globe className="h-3 w-3" />) : (<p>{new URL(statsUser.websites[0]).hostname.replace(/^www\./, "")}</p>)}
+                    {statsUser.websites && (
+                      <Link
+                        href={statsUser.websites[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+                      >
+                        {customizations.showIcons ? (<Globe className="h-3 w-3" />) : (<p>{new URL(statsUser.websites[0]).hostname.replace(/^www\./, "")}</p>)}
 
-                      {/* <span>{statsUser.twitterUrl}</span> */}
-                    </Link>
-                  )}
-                  {/* {websiteUrl && (
+                        {/* <span>{statsUser.twitterUrl}</span> */}
+                      </Link>
+                    )}
+                    {/* {websiteUrl && (
                   <Link
                     href={websiteUrl}
                     target="_blank"
@@ -307,18 +312,19 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
                   </Link>
                 )} */}
 
-                </div>
-              )}
-              {customizations?.showStreak && (
-                <div className="ml-auto flex items-center gap-1 hover:text-muted-foreground transition-colors cursor-pointer">
-                  <Flame className="h-3 w-3" />
-                  <span className={`${getMutedTextColor()} hover:text-muted-foreground transition-colors cursor-pointer`}>{statsUser.streak} day streak</span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+                  </div>
+                )}
+                {customizations?.showStreak && (
+                  <div className="ml-auto flex items-center gap-1 hover:text-muted-foreground transition-colors cursor-pointer">
+                    <Flame className="h-3 w-3" />
+                    <span className={`${getMutedTextColor()} hover:text-muted-foreground transition-colors cursor-pointer`}>{statsUser.streak} day streak</span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </Suspense>
   )
 }

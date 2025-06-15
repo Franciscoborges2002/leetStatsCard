@@ -47,11 +47,11 @@ export default function LeetCodeCards() {
       font: selectedFont,
       theme: theme,
       border: showBorder ? "true" : "false",
+      borderRadius: borderRadius.join(","),
       graph: showDifficultyGraph ? "true" : "false",
       links: showLinks ? "true" : "false",
       streak: showStreak ? "true" : "false",
       icons: showIcons ? "true" : "false",
-      /* borderRadius: boderRadius, */
     })
 
     const url = `http://localhost:3000/card?card=${selectedCard}&${params.toString()}`
@@ -65,8 +65,8 @@ export default function LeetCodeCards() {
     showDifficultyGraph,
     showLinks,
     showStreak,
-    showIcons/* ,
-    boderRadius */
+    showIcons,
+    borderRadius
   ])
 
   const fetchStats = () => {
