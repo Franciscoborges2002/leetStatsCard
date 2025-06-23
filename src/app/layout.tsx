@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Leet Stats Code",
+  title: "Leet Stats Card",
   description: "Create your LeetCode Stats Card!",
 };
 

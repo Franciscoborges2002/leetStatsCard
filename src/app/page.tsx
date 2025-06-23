@@ -7,7 +7,6 @@ import MinimalCard from "@/components/cards/minimalCard"
 import ThemedCard from "@/components/cards/themedCard" */
 import Footer from "@/components/footer"
 import ExportViewOptions from "@/components/exportViewOptions"
-import { TextAnimate } from "@/components/magicui/text-animate"
 import BasicOptions from "@/components/basicOptions"
 import { ApiResponse } from "@/utils/interfaces"
 import { GitStarButton } from "@/components/eldoraui/gitstarbutton"
@@ -15,8 +14,9 @@ import { toast } from "sonner"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Palette, Settings } from "lucide-react"
 import AdvancedOptions from "@/components/advancedOptions"
-import { CardType } from "@/enum/Card"
+import { CardType } from "@/enum/CardType"
 import { getGlobalAcceptanceRate } from "@/utils/utils"
+import LoadingAnimation from "@/components/loadingAnimation"
 
 export default function LeetCodeCards() {
   const [username, setUsername] = useState<string>("fborges")
@@ -121,19 +121,8 @@ export default function LeetCodeCards() {
   }, []) // Only on first mount
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!stats) {
-    return (
-      <div className="flex flex-col gap-5 items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-opacity-50"></div>
-        <TextAnimate animation="blurInUp" by="word" once className="text-2xl font-bold">
-          Leetcode Stats Card
-        </TextAnimate>
-        <TextAnimate animation="blurInUp" by="word" once>
-          Fetching Information...
-        </TextAnimate>
-      </div>
-    )
-  }
+  if (!stats) return <LoadingAnimation />
+
 
   const allQuestionsCount = stats.allQuestionsCount ? {
     totalQuestions: stats.allQuestionsCount[0].count,
@@ -182,8 +171,8 @@ export default function LeetCodeCards() {
   }
 
   return (
-    <div>
-      <div className="px-50 w-full">
+    <div className="">
+      <div className="px-4 sm:px-8 md:px-12 w-full">
         <header className="w-full flex flex-row pt-10 justify-between align-center">
           <div>
             <h1 className="text-3xl font-bold mb-2">Leetcode Stats Cards</h1>
@@ -237,14 +226,14 @@ export default function LeetCodeCards() {
           <div>
             <h2 className="text-lg font-medium mb-2">Card Type:</h2>
             <Tabs defaultValue="minimal" value={selectedCard} onValueChange={setSelectedCard}>
-              <TabsList className="grid w-full  mb-8">{/* grid-cols-3 */}
+              <TabsList className="flex flex-wrap gap-2 mb-8">{/* grid-cols-3 */}
                 <TabsTrigger value="minimal" className="cursor-pointer">Minimal</TabsTrigger>
                 {/* <TabsTrigger value="detailed" className="cursor-pointer">Detailed</TabsTrigger>
                 <TabsTrigger value="themed" className="cursor-pointer">Themed</TabsTrigger> */}
               </TabsList>
 
-              <div className="flex justify-center mb-8">
-                <TabsContent value="minimal" className="w-full max-w-md">
+              <div className="items-center mb-8">
+                <TabsContent value="minimal" className="w-full max-w-md mx-auto">
                   <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} customizations={cardCustomizations} />
                 </TabsContent>
                 {/* <TabsContent value="detailed" className="w-full max-w-md">
@@ -258,7 +247,7 @@ export default function LeetCodeCards() {
           </div>
 
           {/* Options below the cards */}
-          <div className="bg-muted/50 p-4 rounded-lg">
+          <div className="bg-muted/50 p-4 rounded-lg mt-8 w-full overflow-x-auto">
             <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} selectedFont={selectedFont} showDifficultyGraph={false} previewURL={previewURL} />
           </div>
         </main>
