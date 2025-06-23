@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import MinimalCard from "@/components/cards/minimalCard" // adjust path as needed
 import { ApiResponse } from '@/utils/interfaces'
-import { TextAnimate } from '@/components/magicui/text-animate'
+import LoadingAnimation from './loadingAnimation'
 
 
 export default function CardPage() {
@@ -17,7 +17,7 @@ export default function CardPage() {
 
     const [username, setUsername] = useState('')
     const [cardType, setCardType] = useState('minimal')
-    const [theme, setTheme] = useState('dark')
+    const [theme, setTheme] = useState('light')
     const [selectedFont, setSelectedFont] = useState('')
 
     /* Costumization */
@@ -73,27 +73,13 @@ export default function CardPage() {
         fetchStats()
     }, [username])
 
-
-
     if (!searchParams) return <div>Loading...</div>
 
     if (!username) return <div className="p-6">Username is required.</div>
     if (loading) return <div className="p-6">Loading stats for {username}...</div>
     if (error) return <div className="p-6 text-red-500">Error: {error}</div>
 
-    if (!stats) {
-        return (
-            <div className="flex flex-col gap-5 items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-slate-500 border-opacity-50"></div>
-                <TextAnimate animation="blurInUp" by="word" once className="text-2xl font-bold">
-                    Leetcode Stats Card
-                </TextAnimate>
-                <TextAnimate animation="blurInUp" by="word" once>
-                    Fetching Information...
-                </TextAnimate>
-            </div>
-        )
-    }
+    if (!stats) return <LoadingAnimation />
 
 
     const allQuestionsCount = stats.allQuestionsCount ? {
@@ -145,7 +131,7 @@ export default function CardPage() {
     return (
         <>
             {cardType === 'minimal' && (
-                <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} customizations={cardCustomizations} />
+                <MinimalCard statsUser={leetcodeStats} allQuestions={allQuestionsCount} customizations={cardCustomizations}/>
             )}
         </>
     )

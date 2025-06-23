@@ -142,7 +142,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
           </Card>
         )}
         {(statsUser !== null && allQuestions !== null) && (
-          <Card className={`w-[500px] h-[250px] overflow-hidden ${!customizations?.showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`} style={cardStyle}>
+          <Card id="minimalCard" className={`w-[500px] h-[250px] overflow-hidden ${!customizations?.showBorder && "border-0 shadow-none"} ${getThemeClasses()} ${getFontClasses()}`} style={cardStyle}>
             <CardContent className="p-6">
               {/*             {getThemeClasses()} */}
               <div className="flex items-center justify-between mb-4">

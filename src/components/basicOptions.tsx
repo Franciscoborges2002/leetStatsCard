@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CardType } from "@/enum/Card";
+import { CardType } from "@/enum/CardType";
 
 interface BasicOptionsProps {
     username: string;
