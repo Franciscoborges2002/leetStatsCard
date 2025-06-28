@@ -1,10 +1,10 @@
-FROM node:20-alpine
+FROM node-20
 
-WORKDIR /app
-
+# Install Chromium dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
+    chromium \
     fonts-liberation \
     libappindicator3-1 \
     libasound2 \
@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     xdg-utils \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 COPY . .
 
