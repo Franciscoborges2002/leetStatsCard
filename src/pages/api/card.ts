@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 
 const VIEWPORTS: Record<string, { width: number; height: number }> = {
   minimal: { width: 960, height: 390 },
@@ -22,6 +22,7 @@ export default async function handler(
   console.log(url)
 
   const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium', // or use `which chromium` to confirm path
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
