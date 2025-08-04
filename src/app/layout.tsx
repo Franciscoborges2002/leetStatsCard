@@ -39,6 +39,8 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
+
+        <script defer src="https://umami.fborges.dev/script.js" data-website-id="078e0ce1-99ac-4b1a-a39b-430ffe5f3542"></script>
       </body>
     </html>
   );
