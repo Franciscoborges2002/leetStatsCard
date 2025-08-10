@@ -5,45 +5,46 @@ const VIEWPORTS: Record<string, { width: number; height: number }> = {
   minimal: { width: 960, height: 390 },
   classic: { width: 960, height: 480 },
   summary: { width: 960, height: 600 },
-}
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const query = req.query as Record<string, string>
-  const cardType = query.card || 'minimal'
-  console.log(query.card)
-  const viewport = VIEWPORTS[cardType] || VIEWPORTS['minimal']
-  const params = new URLSearchParams(query).toString()
+  const query = req.query as Record<string, string>;
+  const cardType = query.card || 'minimal';
+  const viewport = VIEWPORTS[cardType] || VIEWPORTS['minimal'];
+  const params = new URLSearchParams(query).toString();
+  const url = `http://app:3000/card?${params}`;
 
-  const url = `http://localhost:3000/card?${params}`
+  try {
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: process.env.BROWSERLESS_URL || 'ws://localhost:3001',
+    });
 
-  console.log(url)
+    const page = await browser.newPage();
+    await page.setViewport(viewport);
+    await page.goto(url, { waitUntil: 'networkidle0' });
 
-  const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/chromium', // or use `which chromium` to confirm path
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+    const card = await page.$('#minimalCard');
+    if (!card) {
+      await browser.close();
+      return res.status(404).send('Card element not found');
+    }
 
-  const page = await browser.newPage()
-  await page.setViewport(viewport)
-  await page.goto(url, { waitUntil: 'networkidle0' })
-  const card = await page.$('#minimalCard')
-  if (!card) {
-    await browser.close()
-    return res.status(404).send('Card element not found')
-  }
-  const buffer = await card?.screenshot({ type: 'png' });
+    const buffer = await card.screenshot({ type: 'png' });
 
-  await browser.close();
+    await browser.close();
 
-  if (buffer) {
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.status(200).send(buffer);
-  } else {
-    res.status(500).json({ error: 'Could not capture screenshot' });
+    if (buffer) {
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Cache-Control', 'no-cache');
+      return res.status(200).send(buffer);
+    } else {
+      return res.status(500).json({ error: 'Could not capture screenshot' });
+    }
+  } catch (err: unknown) {
+    console.error('Puppeteer error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
