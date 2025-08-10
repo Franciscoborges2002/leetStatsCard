@@ -19,7 +19,7 @@ export default async function handler(
 
   try {
     const browser = await puppeteer.connect({
-      browserWSEndpoint: process.env.BROWSERLESS_URL || 'ws://localhost:3001',
+      browserWSEndpoint: process.env.BROWSERLESS_URL || 'ws://localhost:5001',
       //browserURL: "http://localhost:3001"
     });
 
