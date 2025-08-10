@@ -46,7 +46,7 @@ export default function BasicOptions({ username, setUsername, fetchStats, loadin
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Enter LeetCode username"
                         />
-                        <Button variant="outline" size="icon" onClick={fetchStats} disabled={loading} className="cursor-pointer">
+                        <Button variant="outline" size="icon" onClick={fetchStats} disabled={loading} className="cursor-pointer" data-umami-event="Fetch LC information">
                             {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
                         </Button>
                     </div>

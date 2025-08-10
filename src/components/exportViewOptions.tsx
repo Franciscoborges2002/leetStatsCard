@@ -144,7 +144,7 @@ jobs:
                         </div>
 
                         <div className="flex flex-row gap-5">
-                            <Button onClick={copyMarkdown} className="flex gap-2 w-2/6 cursor-pointer">
+                            <Button onClick={copyMarkdown} className="flex gap-2 w-2/6 cursor-pointer" data-umami-event="Copy Markdown">
                                 <Clipboard className="h-4 w-4" />
                                 Copy Markdown
                             </Button>
@@ -165,7 +165,7 @@ jobs:
                         </div>
 
                         <div className="flex flex-row sm:flex-col gap-5">
-                            <Button onClick={copyWebsite} className="flex gap-2 w-2/6 cursor-pointer">
+                            <Button onClick={copyWebsite} className="flex gap-2 w-2/6 cursor-pointer" data-umami-event="Copy To Website">
                                 <Clipboard className="h-4 w-4" />
                                 Copy
                             </Button>

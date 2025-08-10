@@ -180,7 +180,7 @@ export default function LeetCodeCards() {
               Showcase your LeetCode stats online with customizable cards.
             </p>
           </div>
-          <GitStarButton />
+          <GitStarButton data-umami-event="Click Star on Github" />
         </header>
 
         <main className="w-full py-10 px-4">
