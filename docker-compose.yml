@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - browserless
+    environment:
+      - BROWSERLESS_URL=http://browserless:3000
+  browserless:
+    image: browserless/chrome:latest
+    ports:
+      - "3001:3000"
