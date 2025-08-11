@@ -39,7 +39,7 @@ export default function LeetCodeCards() {
   const [loading, setLoading] = useState<boolean>(false)
   const [stats, setStats] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [previewURL, setPreviewURL] = useState<string>("");/* https://leetcodestatscard.tsi2market.com/ */
+  const [previewURL, setPreviewURL] = useState<string>("");
 
   useEffect(() => {
     const params = new URLSearchParams({
