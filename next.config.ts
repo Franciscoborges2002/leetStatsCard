@@ -6,8 +6,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'assets.leetcode.com',
+
       },
     ],
+    unoptimized: true,//disables the proxy optimization
   },
 };
 
