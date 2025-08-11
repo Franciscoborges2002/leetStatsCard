@@ -5,11 +5,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { toast } from "sonner";
 
-export default function ExportViewOptions({ selectedCard, username, theme, showBorder, selectedFont, showDifficultyGraph, previewURL }:
-    { selectedCard: string, username: string, theme: string, showBorder: boolean, selectedFont: string, showDifficultyGraph: boolean, previewURL: string })
+export default function ExportViewOptions({ selectedCard, username, theme, showBorder, selectedFont, showDifficultyGraph, urlQuery }:
+    { selectedCard: string, username: string, theme: string, showBorder: boolean, selectedFont: string, showDifficultyGraph: boolean, urlQuery: string })
     : ReactNode | Promise<ReactNode> {
     const copyMarkdown = () => {
-        const markdown = `![LeetCode Stats](${previewURL})`
+        const markdown = `![LeetCode Stats](${urlQuery})`
 
         navigator.clipboard.writeText(markdown)
         toast("Copied to clipboard", {
@@ -20,7 +20,7 @@ export default function ExportViewOptions({ selectedCard, username, theme, showB
     }
 
     const copyWebsite = () => {
-        const markdown = `<a hred="${previewURL}"><img src="${previewURL}" alt="LeetCode Stats" /></a>`
+        const markdown = `<a href="https://leetcodestatscard.fborges.dev/card?${urlQuery}"><img src="https://leetcodestatscard.fborges.dev/api/image?${urlQuery}" alt="LeetCodeStatsCard of ${username}" /></a>`
 
         navigator.clipboard.writeText(markdown)
         toast("Copied to clipboard", {
@@ -29,24 +29,6 @@ export default function ExportViewOptions({ selectedCard, username, theme, showB
             closeButton: true,
         })
     }
-
-    /* const generateMarkdown = () => {
-        const baseUrl = "https://leetcode-cards.vercel.app"
-
-        // Build position parameters
-        const positionParams = Object.entries(componentPositions)
-            .map(([key, value]) => `${key}Position=${value}`)
-            .join("&")
-
-        const cardMarkdown = `![LeetCode Stats](${baseUrl}/api/${selectedCard}?username=${username}&github=${githubUsername}&website=${encodeURIComponent(websiteUrl)}&theme=${theme}&border=${showBorder}&font=${selectedFont}&diffGraph=${showDifficultyGraph}&timeframe=${activityTimeframe}&${positionParams})`
-
-        return cardMarkdown
-    } */
-
-    /* timeframe: "${activityTimeframe}"
-          component_positions: "${Object.entries(componentPositions)
-                .map(([key, value]) => `${key}:${value}`)
-                .join(",")}" */
 
     const generateAutoUpdateGuide = () => {
         return `## 🔄 Auto-updating LeetCode Stats
@@ -118,11 +100,7 @@ jobs:
                     variant="outline"
                     className="flex gap-2 cursor-pointer"
                     onClick={() => {
-                        /* const baseUrl = "https://leetcode-cards.vercel.app" */
-                        /*  const positionParams = Object.entries(componentPositions)
-                             .map(([key, value]) => `${key}Position=${value}`)
-                             .join("&") */
-                        window.open(previewURL, "_blank")
+                        window.open(urlQuery, "_blank")
                     }}
                 >
                     <ExternalLink className="h-4 w-4" />
@@ -139,7 +117,7 @@ jobs:
                         <h3 className="text-lg font-medium mb-4">Add to your GitHub profile</h3>
                         <div className="mb-4 bg-black/90 text-white p-3 rounded-md overflow-x-auto">
                             <code className="text-sm">
-                                {`![LeetCode Stats](${previewURL})`}
+                                {`![LeetCode Stats](https://leetcodestatscard.fborges.dev/api/image?${urlQuery})`}
                             </code>
                         </div>
 
@@ -160,7 +138,7 @@ jobs:
                         <h3 className="text-lg font-medium mb-4">Add to your website</h3>
                         <div className="mb-4 bg-black/90 text-white p-3 rounded-md overflow-x-auto">
                             <code className="text-sm">
-                                {`<a hred="${previewURL}"><img src="${previewURL}" alt="LeetCode Stats" /></a>`}
+                                {`<a href="https://leetcodestatscard.fborges.dev/card?${urlQuery}"><img src="https://leetcodestatscard.fborges.dev/api/image?${urlQuery}" alt="LeetCode Stats" /></a>`}
                             </code>
                         </div>
 

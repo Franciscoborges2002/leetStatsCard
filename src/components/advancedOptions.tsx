@@ -6,15 +6,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Button } from "./ui/button"*/
 
 interface AdvancedOptionsProps {
-    borderRadius: number[];
-    setBorderRadius: (bodyRadius: number[]) => void;
+    /* borderRadius: number[];
+    setBorderRadius: (bodyRadius: number[]) => void; */
     accentColor: string;
     setAccentColor: (bodyRadius: string) => void;
     backgroundOpacity: number[]
     setBackgroundOpacity: (bodyRadius: number[]) => void;
 }
 
-export default function AdvancedOptions({ borderRadius, setBorderRadius, accentColor, setAccentColor, backgroundOpacity, setBackgroundOpacity}: AdvancedOptionsProps) {
+export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ accentColor, setAccentColor, backgroundOpacity, setBackgroundOpacity}: AdvancedOptionsProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

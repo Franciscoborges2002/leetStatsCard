@@ -101,7 +101,7 @@ export default async function handler(
 
     const json = await response.json();
 
-    console.log(json);
+    //console.log(json);
 
     if (!json || !json.data) {
       return res.status(500).json({ error: "Invalid response from LeetCode" });

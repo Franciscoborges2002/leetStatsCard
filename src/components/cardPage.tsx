@@ -26,7 +26,7 @@ export default function CardPage() {
     const [showLinks, setShowLinks] = useState<boolean>(true)
     const [showIcons, setShowIcons] = useState<boolean>(true)
     const [showStreak, setShowStreak] = useState<boolean>(true)
-    const [borderRadius, setBorderRadius] = useState<number[]>([10]);
+    //const [borderRadius, setBorderRadius] = useState<number[]>([10]);
     const [accentColor, setAccentColor] = useState<string>("#3b82f6")
     const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100])
 
@@ -44,7 +44,7 @@ export default function CardPage() {
         setShowLinks(searchParams.get("links") === 'true')
         setShowIcons(searchParams.get("icons") === 'true')
         setShowStreak(searchParams.get("streak") === 'true')
-        setBorderRadius(getNumberArray(searchParams.get("borderRadius")) || [10])
+        //setBorderRadius(getNumberArray(searchParams.get("borderRadius")) || [10])
         setAccentColor(searchParams.get("accentColor") || "#3b82f6")
         setBackgroundOpacity(getNumberArray(searchParams.get("backgroundOpacity")) || [100])
     }, [searchParams])
@@ -60,7 +60,7 @@ export default function CardPage() {
                 const res = await fetch(`/api/leetcode?username=${username}`)
                 if (!res.ok) throw new Error(`API error: ${res.status}`)
                 const data = await res.json()
-                console.log(data)
+                //console.log(data)
                 setStats(data)
             } catch (err: any) {
                 setError(err.message || 'Unknown error')
@@ -117,7 +117,7 @@ export default function CardPage() {
         showLinks,
         showStreak,
         showIcons,
-        borderRadius: borderRadius[0],
+        //borderRadius: borderRadius[0],
         accentColor,
         backgroundOpacity: backgroundOpacity[0],
         /* cardWidth: cardWidth[0],

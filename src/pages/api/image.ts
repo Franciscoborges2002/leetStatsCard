@@ -38,7 +38,7 @@ export default async function handler(
     }
 
     // Type of screenshot wanted
-    //Type:             png   -> Have radius border
+    //Type:             png   -> Have radius border, not working right now
     //Fullpage:         false -> Just want the card element
     //omitBackground:   true  -> Allow screenshots with transparancy
     const buffer = await card.screenshot({ type: 'png', fullPage: false, omitBackground: true });

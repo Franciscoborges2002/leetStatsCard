@@ -40,7 +40,7 @@ interface MinimalCardProps {
     showDifficultyGraph: boolean
     showStreak: boolean
     showLinks: boolean
-    borderRadius: number
+    //borderRadius: number
     accentColor: string
     backgroundOpacity: number
     showIcons: boolean
@@ -114,7 +114,7 @@ export default function MinimalCard({ statsUser, allQuestions, customizations }:
   }
 
   const cardStyle = {
-    borderRadius: `${customizations?.borderRadius}px`,
+    //borderRadius: `${customizations?.borderRadius}px`,
     /* opacity: customizations?.backgroundOpacity/100, */
     /* backgroundColor: */
     /* theme === "dark"

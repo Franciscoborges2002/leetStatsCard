@@ -31,7 +31,7 @@ export default function LeetCodeCards() {
   const [showLinks, setShowLinks] = useState<boolean>(true)
   const [showIcons, setShowIcons] = useState<boolean>(true)
   const [showStreak, setShowStreak] = useState<boolean>(true)
-  const [borderRadius, setBorderRadius] = useState<number[]>([10]);
+  //const [borderRadius, setBorderRadius] = useState<number[]>([10]);
   const [accentColor, setAccentColor] = useState<string>("#3b82f6")
   const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100])
 
@@ -39,7 +39,7 @@ export default function LeetCodeCards() {
   const [loading, setLoading] = useState<boolean>(false)
   const [stats, setStats] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [previewURL, setPreviewURL] = useState<string>("");
+  const [URLQuery, setURLQuery] = useState<string>("");
 
   useEffect(() => {
     const params = new URLSearchParams({
@@ -47,15 +47,15 @@ export default function LeetCodeCards() {
       font: selectedFont,
       theme: theme,
       border: showBorder ? "true" : "false",
-      borderRadius: borderRadius.join(","),
+      //borderRadius: borderRadius.join(","),
       graph: showDifficultyGraph ? "true" : "false",
       links: showLinks ? "true" : "false",
       streak: showStreak ? "true" : "false",
       icons: showIcons ? "true" : "false",
     })
 
-    const url = `https://leetcodestatscard.fborges.dev/card?card=${selectedCard}&${params.toString()}`
-    setPreviewURL(url)
+    const query = `card=${selectedCard}&${params.toString()}`
+    setURLQuery(query)
   }, [
     username,
     selectedFont,
@@ -66,7 +66,7 @@ export default function LeetCodeCards() {
     showLinks,
     showStreak,
     showIcons,
-    borderRadius
+    //borderRadius
   ])
 
   const fetchStats = () => {
@@ -88,7 +88,7 @@ export default function LeetCodeCards() {
             closeButton: true,
             className: "bg-green-500"
           })
-          console.log(data)
+          //console.log(data)
           setStats(data);
           setLoading(false);
         } else {
@@ -159,7 +159,7 @@ export default function LeetCodeCards() {
     showLinks,
     showStreak,
     showIcons,
-    borderRadius: borderRadius[0],
+    //borderRadius: borderRadius[0],
     accentColor,
     backgroundOpacity: backgroundOpacity[0],
     /* cardWidth: cardWidth[0],
@@ -214,9 +214,9 @@ export default function LeetCodeCards() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <AdvancedOptions borderRadius={borderRadius} setBorderRadius={setBorderRadius}
+                  <AdvancedOptions 
                     accentColor={accentColor} setAccentColor={setAccentColor}
-                    backgroundOpacity={backgroundOpacity} setBackgroundOpacity={setBackgroundOpacity} />
+                    backgroundOpacity={backgroundOpacity} setBackgroundOpacity={setBackgroundOpacity} />{/* borderRadius={borderRadius} setBorderRadius={setBorderRadius} */}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -248,7 +248,7 @@ export default function LeetCodeCards() {
 
           {/* Options below the cards */}
           <div className="bg-muted/50 p-4 rounded-lg mt-8 w-full overflow-x-auto">
-            <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} selectedFont={selectedFont} showDifficultyGraph={false} previewURL={previewURL} />
+            <ExportViewOptions selectedCard={selectedCard} username={username} theme={theme} showBorder={showBorder} selectedFont={selectedFont} showDifficultyGraph={false} urlQuery={URLQuery} />
           </div>
         </main>
       </div>
