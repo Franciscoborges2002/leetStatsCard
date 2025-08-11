@@ -40,9 +40,9 @@ interface MinimalCardProps {
     showDifficultyGraph: boolean
     showStreak: boolean
     showLinks: boolean
-    //borderRadius: number
+    /* borderRadius: number */
     accentColor: string
-    backgroundOpacity: number
+    /* backgroundOpacity: number */
     showIcons: boolean
     /* cardTitle: string
     showRanking: boolean

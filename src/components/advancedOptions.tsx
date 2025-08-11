@@ -1,5 +1,5 @@
 import { Label } from "recharts"
-import { Slider } from "./ui/slider"
+/* import { Slider } from "./ui/slider" */
 import { Input } from "./ui/input";
 /* import { Input } from "./ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
@@ -10,11 +10,11 @@ interface AdvancedOptionsProps {
     setBorderRadius: (bodyRadius: number[]) => void; */
     accentColor: string;
     setAccentColor: (bodyRadius: string) => void;
-    backgroundOpacity: number[]
-    setBackgroundOpacity: (bodyRadius: number[]) => void;
+    /* backgroundOpacity: number[]
+    setBackgroundOpacity: (bodyRadius: number[]) => void; */
 }
 
-export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ accentColor, setAccentColor, backgroundOpacity, setBackgroundOpacity}: AdvancedOptionsProps) {
+export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ accentColor, setAccentColor, /* backgroundOpacity, setBackgroundOpacity */}: AdvancedOptionsProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -73,7 +73,7 @@ export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ a
                     </div>
                 </div> */}
 
-                <div>
+                {/* <div>
                     <Label className="mb-2 block font-medium">Background Opacity</Label>
                     <p className="text-sm text-muted-foreground mb-2">Transparency of the card background</p>
                     <div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ a
                         />
                         <span className="text-sm font-medium w-12">{backgroundOpacity[0]}%</span>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="space-y-4">

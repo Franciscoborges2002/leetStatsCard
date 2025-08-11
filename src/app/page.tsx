@@ -33,7 +33,7 @@ export default function LeetCodeCards() {
   const [showStreak, setShowStreak] = useState<boolean>(true)
   //const [borderRadius, setBorderRadius] = useState<number[]>([10]);
   const [accentColor, setAccentColor] = useState<string>("#3b82f6")
-  const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100])
+  /* const [backgroundOpacity, setBackgroundOpacity] = useState<number[]>([100]) */
 
   /* Page state handling */
   const [loading, setLoading] = useState<boolean>(false)
@@ -161,7 +161,7 @@ export default function LeetCodeCards() {
     showIcons,
     //borderRadius: borderRadius[0],
     accentColor,
-    backgroundOpacity: backgroundOpacity[0],
+    /* backgroundOpacity: backgroundOpacity[0], */
     /* cardWidth: cardWidth[0],
     
     
@@ -216,7 +216,7 @@ export default function LeetCodeCards() {
                 <AccordionContent>
                   <AdvancedOptions 
                     accentColor={accentColor} setAccentColor={setAccentColor}
-                    backgroundOpacity={backgroundOpacity} setBackgroundOpacity={setBackgroundOpacity} />{/* borderRadius={borderRadius} setBorderRadius={setBorderRadius} */}
+                     />{/* borderRadius={borderRadius} setBorderRadius={setBorderRadius} backgroundOpacity={backgroundOpacity} setBackgroundOpacity={setBackgroundOpacity} */}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
