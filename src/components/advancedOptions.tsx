@@ -41,7 +41,7 @@ export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ a
                     </div>
                 </div>
 
-                <div>
+                {/* <div>
                     <Label className="mb-2 block font-medium">Border Radius</Label>
                     <p className="text-sm text-muted-foreground mb-2">Roundness of card corners (0-20px)</p>
                     <div className="flex items-center gap-4">
@@ -55,7 +55,7 @@ export default function AdvancedOptions({ /* borderRadius, setBorderRadius, */ a
                         />
                         <span className="text-sm font-medium w-12">{borderRadius[0]}px</span>
                     </div>
-                </div>
+                </div> */}
 
                 {/* <div>
                     <Label className="mb-2 block font-medium">Card Width</Label>
